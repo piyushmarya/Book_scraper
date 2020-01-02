@@ -5,37 +5,43 @@ URL = "http://books.toscrape.com/"
 
 html_content = requests.get(URL).content
 #print(html_content)
-
+BOOK_LOCATOR = "li.col-xs-6"
+TITLE_LOCATOR = "h3 a"
+RATING_LOCATOR = "p.star-rating"
+PRICE_LOCATOR = "p.price_color"
+LINK_LOCATOR = "h3 a"
 parser = BeautifulSoup(html_content,'html.parser')
 
 
 def find_price(a):
-    price = a.select_one(price_locator)
-    print(price.string)
+    price = a.select_one(PRICE_LOCATOR)
+    return price.string
     
 
 def find_rating(a):
-    rating_data = a.select_one(rating_locator)
+    rating_data = a.select_one(RATING_LOCATOR)
     rating = rating_data.attrs.get('class')
-    print([i for i in rating if i not in "star-rating"])
+    return ([i for i in rating if i not in "star-rating"])[0]
     
 #    print(rating)
 
 def find_title(a):
-    title_data = a.select_one(title_locator)
-    print(title_data)
-    title = title_data.attrs.get('title')
-    print(title)
+    title_data = a.select_one(TITLE_LOCATOR)
+    title = title_data.attrs['title']
+    return title
+
+def find_link(a):
+    link_data = a.select_one(LINK_LOCATOR)
+    link = link_data.attrs['href']
+    return link
 
 if __name__ == "__main__":
-    book_locator = "li.col-xs-6"
-    title_locator = "a"
-    rating_locator = "p.star-rating"
-    price_locator = "p.price_color"
-    a = parser.select(book_locator)
+    a = parser.select(BOOK_LOCATOR)
     for i in a:
-#        find_price(i)
-#        find_rating(i)
-         find_title(i)
+        print(find_price(i) + " " +
+        find_rating(i) + " " +
+        find_title(i) + " " +
+        find_link(i)) 
+
 
 
