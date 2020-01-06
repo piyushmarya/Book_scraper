@@ -75,7 +75,7 @@ if __name__ == "__main__":
         html_content = requests.get(URL).content
         parser = BeautifulSoup(html_content, "html.parser")
 
-        # var book_data consists of all the books on the i'th page
+        # var all_book_data consists of all the books on the i'th page
         all_book_data = parser.select(BOOK_LOCATOR)
 
         # iterating over every book and finding title,rating,price,link
